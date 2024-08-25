@@ -5,7 +5,7 @@ myLog::myLog(const std::string& log_path, const std::string& log_file_name)
 {
     FLAGS_alsologtostderr = true; // 输出到标准输出
     FLAGS_colorlogtostderr = true; // 输出到标准错误
-    FLAGS_log_prefix = false; // 不输出日志前缀
+    FLAGS_log_prefix = true; // 不输出日志前缀
     FLAGS_logbufsecs = 0; // 禁用日志缓冲区，实时输出
     FLAGS_max_log_size = 20; // 最大日志大小为20Mb, 超过20Mb则删除最早的日志
     FLAGS_stop_logging_if_full_disk = true; // 磁盘满时停止日志记录

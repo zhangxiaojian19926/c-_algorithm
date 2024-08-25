@@ -8,12 +8,12 @@
 
 Common::Common()
 {
-    cout<< "create commont" <<endl;
+    // cout<< "create commont" <<endl;
 }
 
 Common::~Common()
 {
-    cout<< "delete commont" <<endl;
+    // cout<< "delete commont" <<endl;
 }
 
 void Common::create_multilevel_dir(const std::string& dir_path)
