@@ -1,29 +1,3 @@
-### 环境配置
-
-```shell
-ubuntu 18.04 LTS qt 5.15.2 c++17  ninjia ros-ninja
-```
-
-## 1. CmakeList.txt 基本命令
-
-### 1.1 加快编译
-    ninja     // 编译速度更快
-
-
-### 1.2 glog下载
-git clone https://github.com/google/glog.git
-
-#### 1.2.1编译
-```shell
-mkdir build
-cd build
-cmake..
-sudo make install
-sudo ldconfig
-```
-
-#### 1.2.2 cmake
-```shell
 #*************************
 # 声明cmake版本号
 #*************************
@@ -82,7 +56,3 @@ add_executable(${PROJECT_NAME}_test main_common_test.cpp)
 # 配置链接库
 #************************
 target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
-```
-
-
-
