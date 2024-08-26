@@ -46,6 +46,11 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 #************************
 find_package(Qt5 COMPONENTS Core Widgets)
 
+set(CMAKE_PREFIX_PATH /opt/ros/melodic/share/catkin/cmake/)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs) 
+
+include_directories(${catkin_INCLUDE_DIRS})
+
 #*************************
 # 添加库文件
 #*************************
@@ -53,7 +58,7 @@ file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui) # 生成ui文件
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.qrc) # 生成资源文件
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.h) # 生成头文件
 # file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp) 
-set(QT_SOURCES mainwindow.cpp) # 生成源文件
+set(QT_SOURCES mainwindow.cpp rosNode.cpp) # 生成源文件
 
 
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})# 生成头文件
