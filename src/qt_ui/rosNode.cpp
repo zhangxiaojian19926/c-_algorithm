@@ -36,11 +36,11 @@ bool RosNode::init()
         return false;
     }
 
-    ros::start();
+    ros::start(); // 开启ros节点
     ros::NodeHandle nh;
     // ros::start();
 
-    // 发送和订阅
+    // 发送和订阅 /str_msg 这个是话题名称 
     pub_str_msg = nh.advertise<std_msgs::String>("/str_msg", 10); // 发布者
     sub_str_msg = nh.subscribe("/str_msg", 10, &RosNode::callback_strMsg, this); // 订阅者
 
@@ -51,7 +51,7 @@ bool RosNode::init()
 
 /**
  * @brief 启动并运行一个 ROS 节点，确保事件循环和 ROS 通信正常
- *
+ * 替代qtthread 里的run，qtthread线程类里实现的虚函数
  * @return 无
  */
 void RosNode::run()
