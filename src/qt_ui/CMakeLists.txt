@@ -42,9 +42,21 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 #*************************
+# 找到ros相关的东西
+#************************
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs)
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+)
+
+#*************************
 # 导入qt库
 #************************
+set(CMAKE_PREFIX_PATH "/opt/Qt5.12.12/5.12.12/gcc_64/")
+# set(QT5_DIR /opt/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/)
 find_package(Qt5 COMPONENTS Core Widgets)
+set(ROS_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR} rosNode.cpp) # 设置rosNode文件地址
 
 set(CMAKE_PREFIX_PATH /opt/ros/melodic/share/catkin/cmake/)
 find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs) 
@@ -78,8 +90,13 @@ message(STATUS "QT_SOURCES: ${QT_SOURCES}")
 #*************************
 # 生成动态库 qt动态库
 #*************************
-add_library(${PROJECT_NAME} SHARED ${QT_SOURCES} ${QT_FORMS_HPP} ${QT_RESOURCES_CPP} ${QT_MOC_HPP}) # 生成动态库
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets)
+add_library(${PROJECT_NAME} SHARED ${QT_SOURCES} 
+                                   ${QT_FORMS_HPP} 
+                                   ${QT_RESOURCES_CPP} 
+                                   ${QT_MOC_HPP}
+                                   ${ROS_CPP_DIR}) # 生成动态库
+
+target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets ${catkin_LIBRARIES})
 
 #*************************
 # 生成可执行文件
