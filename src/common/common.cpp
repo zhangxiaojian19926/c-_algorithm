@@ -46,7 +46,7 @@ string Common::get_log_path()
     }
 
     // 拼接日志路径
-    path = path + "/log";
+    path = path + "/logs";
     if(access(path.c_str(), F_OK)!= 0)
     {
         cout << "log path not exist!" << endl;

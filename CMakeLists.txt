@@ -1,0 +1,53 @@
+#*************************
+# 声明cmake版本号
+#*************************
+cmake_minimum_required(VERSION 3.16)
+
+#*************************
+# 项目名称 设置编译目录
+#************************
+project(serial_Net_Tools)
+
+#*************************
+# 设置编译类型
+#************************
+# set(DEFAULT_BUILD_TYPE "Release")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+#*************************
+# 指定C++标准 
+#************************
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON) # 确保编译器支持所选标准
+
+#************************
+# 设置优化等级
+#************************
+set(CMAKE_CXX_FLAGS "-w")# 忽略警告信息
+set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb ${CMAKE_CXX_FLAGS}")# 设置DEBUG模式的编译选项
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g -ggdb ${CMAKE_CXX_FLAGS}")# 设置RELEASE模式的编译选项
+
+#*************************
+# 设置可执行程序输出目录
+#************************
+message("PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+
+
+#*************************
+# 添加头文件
+#************************
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/common)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/qt_ui)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools)
+
+
+#*************************
+# 底层cmake添加
+#************************
+add_subdirectory(src)

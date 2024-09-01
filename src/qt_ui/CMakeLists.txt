@@ -1,46 +1,13 @@
 #*************************
-# 声明cmake版本号
-#*************************
-cmake_minimum_required(VERSION 3.16)
-
-#*************************
 # 项目名称 设置编译目录
 #************************
 project(qt_ui)
 
 #*************************
-# 设置编译类型
-#************************
-# set(DEFAULT_BUILD_TYPE "Release")
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Release")
-endif()
-
-#*************************
-# 指定C++标准 
-#************************
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON) # 确保编译器支持所选标准
-
-#************************
-# 设置优化等级
-#************************
-set(CMAKE_CXX_FLAGS "-w")# 忽略警告信息
-set(CMAKE_CXX_FLAGS_DEBUG "-g -ggdb ${CMAKE_CXX_FLAGS}")# 设置DEBUG模式的编译选项
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g -ggdb ${CMAKE_CXX_FLAGS}")# 设置RELEASE模式的编译选项
-
-#*************************
 # 设置变量+打印工程目录
 #************************
-message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
-
-#*************************
-# 添加头文件
-#************************
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../common/)
+# message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+# message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 
 #*************************
 # 找到ros相关的东西
@@ -61,7 +28,8 @@ include_directories(${catkin_INCLUDE_DIRS})
 #*********************************
 # 找到日志库 common 添加日志库的链接
 #*********************************
-find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../common/build)
+message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
 link_libraries(${LOG_LIB_DIR})
 
 #*************************
@@ -81,13 +49,13 @@ QT5_WRAP_CPP(QT_MOC_HPP ${QT_MOC})# 生成头文件
 #*************************
 # 打印消息
 #*************************
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-message(STATUS "QT_FORMS_HPP: ${QT_FORMS_HPP}")
-message(STATUS "QT_RESOURCES_CPP: ${QT_RESOURCES_CPP}")
-message(STATUS "QT_MOC_HPP: ${QT_MOC_HPP}")
-message(STATUS "QT_SOURCES: ${QT_SOURCES}")
-message(STATUS "LOG_LIB_DIR: ${LOG_LIB_DIR}")
-message(STATUS "catkin_LIBRARIES: ${catkin_LIBRARIES}")
+# message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
+# message(STATUS "QT_FORMS_HPP: ${QT_FORMS_HPP}")
+# message(STATUS "QT_RESOURCES_CPP: ${QT_RESOURCES_CPP}")
+# message(STATUS "QT_MOC_HPP: ${QT_MOC_HPP}")
+# message(STATUS "QT_SOURCES: ${QT_SOURCES}")
+# message(STATUS "LOG_LIB_DIR: ${LOG_LIB_DIR}")
+# message(STATUS "catkin_LIBRARIES: ${catkin_LIBRARIES}")
 
 #*************************
 # 生成动态库 qt动态库
