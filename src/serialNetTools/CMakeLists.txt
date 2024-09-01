@@ -9,11 +9,11 @@ project(serialNetTools)
 # message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 # message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 
-#*************************
-# 添加头文件
-#************************
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+#******************************************
+# 添加头文件  外部已经添加，内部可以不哟个添加
+#******************************************
+# set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 #*************************
 # 生成动态库

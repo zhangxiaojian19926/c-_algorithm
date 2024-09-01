@@ -44,7 +44,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/common)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/qt_ui)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/serialNetTools)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/build/devel/include) # 包含编译生成的头文件
 
 
 #*************************

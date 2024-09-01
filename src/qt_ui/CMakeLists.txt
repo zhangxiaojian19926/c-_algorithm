@@ -28,9 +28,8 @@ include_directories(${catkin_INCLUDE_DIRS})
 #*********************************
 # 找到日志库 common 添加日志库的链接
 #*********************************
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
-link_libraries(${LOG_LIB_DIR})
+# find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+# link_libraries(${LOG_LIB_DIR})
 
 #*************************
 # 添加qt库文件 qt编译环境导入
@@ -69,7 +68,7 @@ add_library(${PROJECT_NAME} SHARED ${QT_SOURCES}
 target_link_libraries(${PROJECT_NAME} 
                       Qt5::Core Qt5::Widgets 
                       ${catkin_LIBRARIES} 
-                      ${LOG_LIB_DIR}
+                      common
                       )
 
 #*************************

@@ -12,8 +12,8 @@ project(common)
 #*************************
 # 添加头文件
 #************************
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+# set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 #*************************
 # 生成动态库

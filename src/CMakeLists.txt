@@ -3,4 +3,4 @@
 #************************
 add_subdirectory(common)
 add_subdirectory(qt_ui)
-add_subdirectory(SerialNetTools)
+add_subdirectory(serialNetTools)
