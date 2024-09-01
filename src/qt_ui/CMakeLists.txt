@@ -40,6 +40,7 @@ message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 #************************
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../common/)
 
 #*************************
 # 找到ros相关的东西
@@ -53,25 +54,24 @@ include_directories(
 #*************************
 # 导入qt库
 #************************
-set(CMAKE_PREFIX_PATH "/opt/Qt5.12.12/5.12.12/gcc_64/")
-# set(QT5_DIR /opt/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5/)
-find_package(Qt5 COMPONENTS Core Widgets)
 set(ROS_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR} rosNode.cpp) # 设置rosNode文件地址
-
-set(CMAKE_PREFIX_PATH /opt/ros/melodic/share/catkin/cmake/)
 find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs) 
-
 include_directories(${catkin_INCLUDE_DIRS})
 
+#*********************************
+# 找到日志库 common 添加日志库的链接
+#*********************************
+find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../common/build)
+link_libraries(${LOG_LIB_DIR})
+
 #*************************
-# 添加库文件
+# 添加qt库文件 qt编译环境导入
 #*************************
+find_package(Qt5 COMPONENTS Core Widgets)
 file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui) # 生成ui文件
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.qrc) # 生成资源文件
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.h) # 生成头文件
-# file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.cpp) 
 set(QT_SOURCES mainwindow.cpp rosNode.cpp) # 生成源文件
-
 
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})# 生成头文件
 QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})# 生成资源文件
@@ -86,6 +86,8 @@ message(STATUS "QT_FORMS_HPP: ${QT_FORMS_HPP}")
 message(STATUS "QT_RESOURCES_CPP: ${QT_RESOURCES_CPP}")
 message(STATUS "QT_MOC_HPP: ${QT_MOC_HPP}")
 message(STATUS "QT_SOURCES: ${QT_SOURCES}")
+message(STATUS "LOG_LIB_DIR: ${LOG_LIB_DIR}")
+message(STATUS "catkin_LIBRARIES: ${catkin_LIBRARIES}")
 
 #*************************
 # 生成动态库 qt动态库
@@ -96,7 +98,11 @@ add_library(${PROJECT_NAME} SHARED ${QT_SOURCES}
                                    ${QT_MOC_HPP}
                                    ${ROS_CPP_DIR}) # 生成动态库
 
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} 
+                      Qt5::Core Qt5::Widgets 
+                      ${catkin_LIBRARIES} 
+                      ${LOG_LIB_DIR}
+                      )
 
 #*************************
 # 生成可执行文件
@@ -106,4 +112,6 @@ add_executable(${PROJECT_NAME}_test main.cpp)
 #*************************
 # 配置链接库
 #************************
-target_link_libraries(${PROJECT_NAME}_test ${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME}_test 
+                      ${PROJECT_NAME}
+                     )

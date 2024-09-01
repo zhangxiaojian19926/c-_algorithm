@@ -4,6 +4,7 @@
 #include <qglobal.h>
 #include <qobject.h>
 #include <qpushbutton.h>
+#include <string>
 
 MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     : QMainWindow(parent)
@@ -16,6 +17,13 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(this, &MainWindow::signal_send, this, &MainWindow::slot_send_textEdit); // 连接信号signal_send和槽函数slot_send_text
     connect(this, &MainWindow::signal_rosPub, &rosNode_, &RosNode::slot_putStrMsg); // 连接信号signal_rosPub和槽函数slot_putStrMsg
     connect(&rosNode_, &RosNode::signal_strMsg, this, &MainWindow::slot_send_textEdit); // 连接信号signal_strMsg和槽函数slot_send_textEdit
+
+    string log_path = common_log_.get_log_path();
+    qDebug() << "log_path: " << log_path.c_str();
+    myLog *myLog = new class myLog(log_path, "main");
+
+    LOG(INFO) << "MainWindow Hello world!";
+
 }
 
 MainWindow::~MainWindow()
