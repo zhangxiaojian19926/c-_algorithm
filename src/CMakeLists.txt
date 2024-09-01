@@ -1,6 +1,5 @@
 #*************************
 # 添加底层目录
 #************************
-add_subdirectory(common)
-add_subdirectory(qt_ui)
-add_subdirectory(serialNetTools)
+# add_subdirectory(SerialNetTools)
+add_subdirectory(test)
