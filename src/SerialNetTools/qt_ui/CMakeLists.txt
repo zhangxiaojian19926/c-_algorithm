@@ -9,26 +9,10 @@ project(qt_ui)
 # message("CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 # message(STATUS "PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
 
-#*************************
-# 找到ros相关的东西
-#************************
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs)
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
-
-#*************************
-# 导入qt库
-#************************
-set(ROS_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR} rosNode.cpp) # 设置rosNode文件地址
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs sensor_msgs) 
-include_directories(${catkin_INCLUDE_DIRS})
-
 #*********************************
 # 找到日志库 common 添加日志库的链接
 #*********************************
-# find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+# find_library(LOG_LIB_DIR NAMES common PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../../../lib)
 # link_libraries(${LOG_LIB_DIR})
 
 #*************************
@@ -38,7 +22,7 @@ find_package(Qt5 COMPONENTS Core Widgets)
 file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui) # 生成ui文件
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.qrc) # 生成资源文件
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.h) # 生成头文件
-set(QT_SOURCES mainwindow.cpp rosNode.cpp) # 生成源文件
+set(QT_SOURCES mainwindow.cpp) # 生成源文件
 
 QT5_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})# 生成头文件
 QT5_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})# 生成资源文件
@@ -63,7 +47,7 @@ add_library(${PROJECT_NAME} SHARED ${QT_SOURCES}
                                    ${QT_FORMS_HPP} 
                                    ${QT_RESOURCES_CPP} 
                                    ${QT_MOC_HPP}
-                                   ${ROS_CPP_DIR}) # 生成动态库
+                                   ) # 生成动态库
 
 target_link_libraries(${PROJECT_NAME} 
                       Qt5::Core Qt5::Widgets 
@@ -87,11 +71,11 @@ target_link_libraries(${PROJECT_NAME}_test
 # 项目和库安装
 #*************************
 #特定库绝对路径
-# set_target_properties(${PROJECT_NAME}_test PROPERTIES
-#   INSTALL_RPATH ${MY_CMAKE_INSTALL_PREFIX}/lib)
+set_target_properties(${PROJECT_NAME}_test PROPERTIES
+  INSTALL_RPATH ${MY_CMAKE_INSTALL_PREFIX}/lib)
 
-# set_target_properties(${PROJECT_NAME} PROPERTIES
-#     INSTALL_RPATH ${MY_CMAKE_INSTALL_PREFIX}/lib)
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    INSTALL_RPATH ${MY_CMAKE_INSTALL_PREFIX}/lib)
 
 #相对路径
 set_target_properties(${PROJECT_NAME}_test PROPERTIES
@@ -109,7 +93,7 @@ install(
   )
 
 #头文件安装
-install(FILES mainwindow.h rosNode.h ../common/myLog.h ../common/common.h
+install(FILES mainwindow.h ../common/myLog.h ../common/common.h
   DESTINATION ${MY_CMAKE_INSTALL_PREFIX}/include)
 
 # 安装导出
