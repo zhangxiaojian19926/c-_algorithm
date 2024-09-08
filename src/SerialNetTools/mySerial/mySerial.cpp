@@ -31,7 +31,7 @@ MySerial::~MySerial()
     {
         serialPort_->flush();//清空缓冲区
         serialPort_->close();
-        delete serialPort_;
+        serialPort_->deleteLater();
         serialPort_ = nullptr;
     }
 }
@@ -84,7 +84,7 @@ bool MySerial::start()
     {
         serialPort_->flush();//清空缓冲区
         serialPort_->close();
-        delete serialPort_;
+        serialPort_->deleteLater();
         serialPort_ = nullptr;
     }
 
@@ -160,7 +160,7 @@ void MySerial::stop()
     {
         serialPort_->flush();//清空缓冲区
         serialPort_->close();
-        delete serialPort_;
+        serialPort_->deleteLater();
         serialPort_ = nullptr;
     }
 }

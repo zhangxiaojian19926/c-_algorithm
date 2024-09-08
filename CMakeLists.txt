@@ -38,6 +38,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
 set(MY_CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/install) # 设置安装目录
 
+#*************************
+# 添加QT依赖
+#************************
+set(Qt5_DIR "/opt/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5")
+
 
 #*************************
 # 添加头文件
