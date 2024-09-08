@@ -4,4 +4,5 @@
 add_subdirectory(common)
 add_subdirectory(qt_ui)
 add_subdirectory(rosNode)
+add_subdirectory(mySerial)
 add_subdirectory(serialNetTools)
