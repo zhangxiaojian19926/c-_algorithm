@@ -49,10 +49,10 @@ set(Qt5_DIR "/opt/Qt5.12.12/5.12.12/gcc_64/lib/cmake/Qt5")
 #************************
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/common)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/mySerial)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/qt_ui)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/serialNetTools)
-include_directories(${PROJECT_SOURCE_DIR}/src/serialNetTools/rosNode)
-include_directories(${PROJECT_SOURCE_DIR}/src/serialNetTools/mySerial)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/rosNode)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/build/devel/include) # 包含编译生成的头文件
 
 

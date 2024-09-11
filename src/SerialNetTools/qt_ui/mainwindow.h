@@ -3,8 +3,13 @@
 
 #include <QMainWindow>
 #include <QDebug>
-#include "common.h"
-#include "myLog.h"
+#include <qchar.h>
+#include <qobject.h>
+#include <qvariant.h>
+#include <QDateTime>
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
+#include <QList>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,15 +24,23 @@ public:
     ~MainWindow();
 
 public slots:
-    void slot_btn_send();
-    void slot_send_textEdit(const QString &);//接收信号
+    void slot_send_textEdit(const QVariantMap&);
+    // 按钮发送
+    void slot_btn_mySerial_send();
+    // 按钮开关
+    void slot_btn_mySerial_open();
+    // 功能模是否打开
+    void slot_module_status(const QVariantMap& msg);
 
 signals:
-    void signal_send(const QString &);//发送信号
-    void signal_rosPub(const QString &);//发送信号
+    // UI 发送串口数据
+    void signal_serialSend(const QString&);
+    // 开关
+    void signal_switch(const QVariantMap&);
+
 
 private:
     Ui::MainWindow *ui;
-    Common common_log_;
+    QString addTimerStr(const QString& msg);
 };
 #endif // MAINWINDOW_H

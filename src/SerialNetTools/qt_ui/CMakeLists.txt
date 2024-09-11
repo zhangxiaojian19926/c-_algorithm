@@ -18,7 +18,7 @@ project(qt_ui)
 #*************************
 # 添加qt库文件 qt编译环境导入
 #*************************
-find_package(Qt5 COMPONENTS Core Widgets)
+find_package(Qt5 COMPONENTS Core SerialPort Widgets)
 file(GLOB QT_FORMS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.ui) # 生成ui文件
 file(GLOB QT_RESOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.qrc) # 生成资源文件
 file(GLOB_RECURSE QT_MOC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINKS *.h) # 生成头文件
@@ -50,7 +50,7 @@ add_library(${PROJECT_NAME} SHARED ${QT_SOURCES}
                                    ) # 生成动态库
 
 target_link_libraries(${PROJECT_NAME} 
-                      Qt5::Core Qt5::Widgets 
+                      Qt5::Core Qt5::Widgets Qt5::SerialPort
                       ${catkin_LIBRARIES} 
                       common
                       )
