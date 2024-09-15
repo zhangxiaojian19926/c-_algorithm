@@ -44,7 +44,7 @@ int serialNetTools::init()
                         mainWindow, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
 
     QObject::connect(mainWindow, &MainWindow::signal_serialSend,
-                        mySerial, &MySerial::slot_start, Qt::QueuedConnection);
+                        mySerial, &MySerial::slot_write, Qt::QueuedConnection);
 
     mySerial_thread->start();
 
