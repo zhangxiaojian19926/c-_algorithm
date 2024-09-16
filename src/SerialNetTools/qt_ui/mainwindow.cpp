@@ -10,6 +10,16 @@
 #include <string>
 #include "myLog.h"
 
+// 刷新串口列表
+void serial_refresh(QComboBox* comboBox){
+    comboBox->clear();
+    QList<QSerialPortInfo> list = QSerialPortInfo::availablePorts();
+    foreach(const QSerialPortInfo &info, list){
+        comboBox->addItem("/dev/" + info.portName());
+        LOG(INFO) << ("/dev/" + info.portName()).toStdString();
+    }
+}
+
 MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -23,12 +33,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(ui->pushButton_serialSend, &QPushButton::clicked, 
                 this, &MainWindow::slot_btn_mySerial_send);   
 
-    //加载串口列表
-    QList<QSerialPortInfo> list = QSerialPortInfo::availablePorts();
-    foreach(const QSerialPortInfo &info, list){
-        ui->comboBox_serialName->addItem("/dev/" + info.portName());
-        LOG(INFO) << ("/dev/" + info.portName()).toStdString();
-    }
+    // 发送数据给串口显示框
+    connect(ui->pushButton_serialFlush, &QPushButton::clicked, 
+                this, &MainWindow::slot_refresh_serial);  
+    
+    //刷新窗口列表
+    serial_refresh(ui->comboBox_serialName);
 
     LOG(INFO) << "UI is open!";
 
@@ -160,4 +170,10 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
 
         ui->pushButton_serialOpen->setEnabled(true); // 开启
     }
+}
+
+// 刷新串口
+void MainWindow::slot_refresh_serial(){
+    //加载串口列表
+    serial_refresh(ui->comboBox_serialName);
 }

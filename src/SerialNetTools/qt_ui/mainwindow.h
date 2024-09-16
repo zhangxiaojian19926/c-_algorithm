@@ -31,6 +31,8 @@ public slots:
     void slot_btn_mySerial_open();
     // 功能模是否打开
     void slot_module_status(const QVariantMap& msg);
+    // 刷新串口
+    void slot_refresh_serial();
 
 signals:
     // UI 发送串口数据

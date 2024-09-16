@@ -26,7 +26,7 @@
     <property name="title">
      <string>Serial</string>
     </property>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget1">
      <property name="geometry">
       <rect>
        <x>253</x>
@@ -79,7 +79,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget2">
      <property name="geometry">
       <rect>
        <x>400</x>
@@ -122,7 +122,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget3">
      <property name="geometry">
       <rect>
        <x>253</x>
@@ -173,7 +173,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget4">
      <property name="geometry">
       <rect>
        <x>12</x>
@@ -199,7 +199,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget5">
      <property name="geometry">
       <rect>
        <x>12</x>
@@ -217,22 +217,22 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_serialSave">
-        <property name="text">
-         <string>保存</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="pushButton_serialSend">
         <property name="text">
          <string>发送</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_serialFlush">
+        <property name="text">
+         <string>刷新</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="layoutWidget6">
      <property name="geometry">
       <rect>
        <x>12</x>
@@ -282,7 +282,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QWidget" name="layoutWidget7">
     <property name="geometry">
      <rect>
       <x>20</x>

@@ -18,6 +18,10 @@ serialNetTools::serialNetTools(int argc, char **argv)
 */
 serialNetTools::~serialNetTools()
 {
+    mySerial_thread->deleteLater();
+    delete mySerial;
+    delete mainWindow;
+    delete app;
     std::cout << "de!" << std::endl;
 }
 
