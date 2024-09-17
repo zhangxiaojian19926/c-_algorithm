@@ -53,6 +53,10 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(ui->pushButton_TcpServer_send, &QPushButton::clicked, 
             this, &MainWindow::slot_btn_tcpServer_send);
 
+    // 更新提示  服务器 与 客户端连接失败
+    QObject::connect(this, &MainWindow::signal_tips, 
+                this, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
+
     //刷新窗口列表
     serial_refresh(ui->comboBox_serialName);
 
@@ -242,6 +246,7 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
 
     QString type = msg["type"].toString();
     bool state = msg["state"].toBool();
+    QVariantMap data;
     
     if (type == "mySerial") {
         if (!state) {
@@ -269,8 +274,14 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
             QVariantMap data;
             data["type"] = "tcpClient";
             data["switch"] = false;
+            data["data"] = "tcpClient is not open!";
+            emit signal_tips(data);
             emit signal_switch(data);
-        }   
+        }  else {
+            data["type"] = "tcpClient";
+            data["data"] = "tcpClient connect success!";
+            emit signal_tips(data);
+        }
 
         ui->pushButton_TcpClient_open->setEnabled(true); // 开启
 
@@ -280,11 +291,16 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
             ui->pushButton_TcpServer_open->setText("打开");
             ui->pushButton_TcpServer_open->setStyleSheet("background-color: { }");
 
-            QVariantMap data;
             data["type"] = "tcpServer";
             data["switch"] = false;
+            data["data"] = "tcpServer is not open!";
+            emit signal_tips(data);
             emit signal_switch(data);
-        }   
+        } else {
+            data["type"] = "tcpServer";
+            data["data"] = "tcpServer connect success!";
+            emit signal_tips(data);
+        }
 
         ui->pushButton_TcpServer_open->setEnabled(true); // 开启
 

@@ -54,6 +54,9 @@ signals:
     // 开关
     void signal_switch(const QVariantMap&);
 
+    // 做一个链接失败的提示
+    void signal_tips(const QVariantMap&);
+
 
 private:
     Ui::MainWindow *ui;
