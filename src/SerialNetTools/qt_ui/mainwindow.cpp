@@ -36,7 +36,15 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     // 发送数据给串口显示框
     connect(ui->pushButton_serialFlush, &QPushButton::clicked, 
                 this, &MainWindow::slot_refresh_serial);  
+
+    // 打开tcpclient
+    connect(ui->pushButton_TcpClient_open, &QPushButton::clicked, 
+            this, &MainWindow::slot_btn_tcpClient_open);
     
+    // 打开tcpclient
+    connect(ui->pushButton_TcpClient_send, &QPushButton::clicked, 
+            this, &MainWindow::slot_btn_tcpClient_send);
+
     //刷新窗口列表
     serial_refresh(ui->comboBox_serialName);
 
@@ -63,7 +71,7 @@ void MainWindow::slot_send_textEdit(const QVariantMap& msg)
     QString type = msg["type"].toString();
     QString data = msg["data"].toString();
 
-    QString str = addTimerStr("mySerial receive: ");
+    QString str = addTimerStr(type + "receive: ");
     str += data;
     ui->textEdit_recv->append(str);// 显示到文本框
 }
@@ -83,6 +91,15 @@ void MainWindow::slot_btn_mySerial_send()
     QString send_msg = ui->lineEdit_serialInput->text();
     emit signal_serialSend(send_msg);// 发送出去，给到串口
     QString str = addTimerStr("mySerial send: ");
+    str += send_msg;
+    ui->textEdit_send->append(str);// 显示到文本框
+}
+
+// 发送数据到服务器
+void MainWindow::slot_btn_tcpClient_send(){
+    QString send_msg = ui->lineEdit_TcpClient_input->text();
+    emit signal_tcpClientSend(send_msg);// 发送出去，给到tcpclient
+    QString str = addTimerStr("tcpClient send: ");
     str += send_msg;
     ui->textEdit_send->append(str);// 显示到文本框
 }
@@ -135,6 +152,35 @@ void MainWindow::slot_btn_mySerial_open()
     ui->pushButton_serialOpen->setEnabled(true); // 打开，可以操作
 
     // 发送给串口
+    emit signal_switch(data);
+}
+
+// 打开tcpClient
+void MainWindow::slot_btn_tcpClient_open()
+{
+    QString ip = ui->lineEdit_TcpClient_IP->text();
+    QString port = ui->lineEdit_TcpClient_port->text();
+
+    // 封装成qmap
+    QVariantMap data;
+    data["type"] = "tcpClient";
+    data["ip"] = ip;
+    data["port"] = port;
+
+    // 打开关闭按钮并设置其颜色
+    if (ui->pushButton_TcpClient_open->text() == "打开") {
+        data["switch"] = true;
+        ui->pushButton_TcpClient_open->setText("关闭");
+        ui->pushButton_TcpClient_open->setStyleSheet("background-color: green;");
+    } else {
+        data["switch"] = false;
+        ui->pushButton_TcpClient_open->setText("打开");
+        ui->pushButton_TcpClient_open->setStyleSheet("background-color: { }");
+    }
+
+    LOG(INFO) << "tcpClient ip: " << ip.toStdString() << " port: " << port.toStdString();
+
+    // 发送数据到tcp client
     emit signal_switch(data);
 }
 

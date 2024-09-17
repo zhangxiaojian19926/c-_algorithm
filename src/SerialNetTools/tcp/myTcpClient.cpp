@@ -75,8 +75,9 @@ bool tcpClient::start(){
         stop();
     }
 
+    LOG(INFO) << "isConnected_: " << isConnected_;
     msg["type"] = "tcpClient";
-    msg["state"] = isConnected_;
+    msg["switch"] = isConnected_;
     msg["groupID"] = QString::fromStdString(groupID_);
     msg["ip"] = QString::fromStdString(ip_);
     emit signal_openStatus(msg);
@@ -123,7 +124,7 @@ void tcpClient::write(const QByteArray& msg)
     if (isConnected_ && tcpSocket_!= nullptr 
         && tcpSocket_->state() == QAbstractSocket::ConnectedState) {
         
-        tcpSocket_->write(msg.toHex());// 转换成16进制发送
+        tcpSocket_->write(msg);// 转换成16进制发送
     } else {
         LOG(ERROR) << "tcpClient is not connected";
     }

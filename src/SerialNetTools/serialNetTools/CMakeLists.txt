@@ -53,8 +53,9 @@ target_link_libraries(${PROJECT_NAME}
                         Qt5::Network 
                         Qt5::Concurrent
                         # rosNode
-                        qt_ui
                         mySerial
+                        qt_ui
+                        myTcp
                         # ${catkin_LIBRARIES}
                         )
 

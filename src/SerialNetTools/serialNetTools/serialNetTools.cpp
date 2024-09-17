@@ -3,6 +3,7 @@
 #include "mySerial.h"
 #include <qnamespace.h>
 #include <qobject.h>
+#include "myTcpClient.h"
 
 /**
  * serialNetTools 类的构造函数
@@ -41,16 +42,32 @@ int serialNetTools::init()
     mySerial = new MySerial();
     mySerial->moveToThread(mySerial_thread);
 
+    // 创建客户端线程
+    switchMap["tcpClient"] = [this](const QVariantMap& msg){switch_tcpClient(msg);};
+    tcp_client_thread = new QThread();
+    tcp_client = new tcpClient();
+    tcp_client->moveToThread(tcp_client_thread);
+
+    // 串口的信号与槽的连接
     QObject::connect(mySerial, &MySerial::signal_openStatus, 
                         mainWindow, &MainWindow::slot_module_status, Qt::QueuedConnection);
-
     QObject::connect(mySerial, &MySerial::signal_serial,
                         mainWindow, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
-
     QObject::connect(mainWindow, &MainWindow::signal_serialSend,
                         mySerial, &MySerial::slot_write, Qt::QueuedConnection);
 
+    // tcp客户端的信号与槽的连接
+    QObject::connect(tcp_client, &tcpClient::signal_openStatus, 
+                    mainWindow, &MainWindow::slot_module_status, Qt::QueuedConnection);
+    QObject::connect(tcp_client, &tcpClient::signal_tcpClient, 
+                    mainWindow, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
+    QObject::connect(mainWindow, &MainWindow::signal_tcpClientSend, 
+                    tcp_client, &tcpClient::slot_write, Qt::QueuedConnection);
+
+    
+
     mySerial_thread->start();
+    tcp_client_thread->start();
 
     return app->exec();
 }
@@ -72,6 +89,22 @@ void serialNetTools::switch_mySerial(const QVariantMap &msg)
     } else {
         LOG(INFO) << "mySerial close";
         QMetaObject::invokeMethod(mySerial, "stop", Qt::QueuedConnection);
+    }
+}
+
+void serialNetTools::switch_tcpClient(const QVariantMap &msg){
+    bool state = msg.value("switch").toBool();
+    if (state == true) {
+        string ip = msg.value("ip").toString().toStdString();
+        int port = msg.value("port").toInt();
+        string groudID = msg.value("groudID").toString().toStdString();
+        tcp_client->init(groudID, ip, port); // 初始化客户端
+
+        LOG(INFO) << "tcpClient open";
+        QMetaObject::invokeMethod(tcp_client, "start", Qt::QueuedConnection);
+    } else {
+        LOG(INFO) << "tcpClient close";
+        QMetaObject::invokeMethod(tcp_client, "stop", Qt::QueuedConnection);
     }
 }
 

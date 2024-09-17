@@ -9,7 +9,6 @@
 #include <QVariantMap>
 #include <qglobal.h>
 #include <qtcpsocket.h>
-#include "myLog.h"
 
 class tcpServer:public QObject
 {
@@ -44,7 +43,7 @@ signals:
 private:
     QTcpServer *tcpServer_ = nullptr;
     QTcpSocket *tcpSocket_ = nullptr;
-    QByteArray readBuffer_;
+    QByteArray readBuffer_; // 读取缓冲区 字节存储
     std::string ip_;
     int port_;
     bool isConnected_ = false;// 是否连接成功

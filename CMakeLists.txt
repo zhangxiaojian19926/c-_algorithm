@@ -51,6 +51,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/common)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/mySerial)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/qt_ui)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/tcp)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/serialNetTools)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/SerialNetTools/rosNode)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/build/devel/include) # 包含编译生成的头文件

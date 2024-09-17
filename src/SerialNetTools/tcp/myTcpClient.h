@@ -20,8 +20,8 @@ public:
     void init(const std::string& groupID, const std::string& ip, const int& port);
 
     // 确保可以使用反射机制进行调用
-    bool start();//开启
-    void stop();//关闭
+    Q_INVOKABLE bool start();//开启
+    Q_INVOKABLE void stop();//关闭
 
     void write(const QByteArray& msg);
 
