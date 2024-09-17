@@ -215,6 +215,16 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
         }        
 
         ui->pushButton_serialOpen->setEnabled(true); // 开启
+    } else if (type == "tcpClient") {
+        if (!state) {
+            LOG(INFO) << "tcpClient is not open!";
+            QVariantMap data;
+            data["type"] = "tcpClient";
+            data["switch"] = false;
+            emit signal_switch(data);
+        }   
+        
+        ui->pushButton_TcpClient_open->setEnabled(true); // 开启
     }
 }
 

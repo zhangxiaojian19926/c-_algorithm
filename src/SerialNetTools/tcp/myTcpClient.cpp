@@ -80,6 +80,7 @@ bool tcpClient::start(){
     msg["switch"] = isConnected_;
     msg["groupID"] = QString::fromStdString(groupID_);
     msg["ip"] = QString::fromStdString(ip_);
+    msg["state"] = isConnected_;
     emit signal_openStatus(msg);
 
     return isConnected_;

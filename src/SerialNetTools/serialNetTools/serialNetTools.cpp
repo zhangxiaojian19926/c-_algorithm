@@ -1,6 +1,7 @@
 #include "serialNetTools.h"
 #include "mainwindow.h"
 #include "mySerial.h"
+#include <cstddef>
 #include <qnamespace.h>
 #include <qobject.h>
 #include "myTcpClient.h"
@@ -19,10 +20,43 @@ serialNetTools::serialNetTools(int argc, char **argv)
 */
 serialNetTools::~serialNetTools()
 {
-    mySerial_thread->deleteLater();
-    delete mySerial;
-    delete mainWindow;
-    delete app;
+    // 删除串口相关资源
+    if(mySerial_thread!= nullptr){
+        mySerial_thread->deleteLater();
+        mySerial_thread = nullptr;
+    }
+
+    if (mySerial != nullptr) {
+        delete mySerial;
+        mySerial = nullptr;
+    }
+    
+    if (mainWindow != nullptr) {
+        delete mainWindow;
+        mainWindow = nullptr;
+    }
+
+    if (app!= nullptr) {
+        delete app;
+        app = nullptr;
+    }
+
+    // 删除tcp相关资源
+    if (tcp_client_thread!= nullptr) {
+        tcp_client_thread->deleteLater();
+        tcp_client_thread = nullptr;
+    }
+
+    if (tcp_client != nullptr) {
+        delete tcp_client;
+        tcp_client = nullptr;
+    }
+
+    if (tcp_server_thread!= nullptr) {
+        tcp_server_thread->deleteLater();
+        tcp_server_thread = nullptr;
+    }
+
     std::cout << "de!" << std::endl;
 }
 
@@ -33,7 +67,7 @@ int serialNetTools::init()
     mainWindow = new MainWindow(argc_, argv);
     mainWindow->show();
 
-    // mySerial 初始化
+    // 利用表来开关不同的模块
     QObject::connect(mainWindow, &MainWindow::signal_switch, 
                         this, &serialNetTools::slot_switch, Qt::QueuedConnection);
 
@@ -41,13 +75,6 @@ int serialNetTools::init()
     mySerial_thread = new QThread();
     mySerial = new MySerial();
     mySerial->moveToThread(mySerial_thread);
-
-    // 创建客户端线程
-    switchMap["tcpClient"] = [this](const QVariantMap& msg){switch_tcpClient(msg);};
-    tcp_client_thread = new QThread();
-    tcp_client = new tcpClient();
-    tcp_client->moveToThread(tcp_client_thread);
-
     // 串口的信号与槽的连接
     QObject::connect(mySerial, &MySerial::signal_openStatus, 
                         mainWindow, &MainWindow::slot_module_status, Qt::QueuedConnection);
@@ -56,6 +83,12 @@ int serialNetTools::init()
     QObject::connect(mainWindow, &MainWindow::signal_serialSend,
                         mySerial, &MySerial::slot_write, Qt::QueuedConnection);
 
+
+    // 创建客户端线程
+    switchMap["tcpClient"] = [this](const QVariantMap& msg){switch_tcpClient(msg);};
+    tcp_client_thread = new QThread();
+    tcp_client = new tcpClient();
+    tcp_client->moveToThread(tcp_client_thread);
     // tcp客户端的信号与槽的连接
     QObject::connect(tcp_client, &tcpClient::signal_openStatus, 
                     mainWindow, &MainWindow::slot_module_status, Qt::QueuedConnection);
@@ -64,11 +97,8 @@ int serialNetTools::init()
     QObject::connect(mainWindow, &MainWindow::signal_tcpClientSend, 
                     tcp_client, &tcpClient::slot_write, Qt::QueuedConnection);
 
-    
-
     mySerial_thread->start();
     tcp_client_thread->start();
-
     return app->exec();
 }
 
