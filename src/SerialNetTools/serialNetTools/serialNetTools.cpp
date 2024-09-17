@@ -181,6 +181,7 @@ void serialNetTools::slot_switch(const QVariantMap &msg)
     QString type = msg["type"].toString();
     if (switchMap.contains(type))
     {
+        LOG(INFO) << "type: " << type.toStdString();
         switchMap[type](msg);
     }
 }

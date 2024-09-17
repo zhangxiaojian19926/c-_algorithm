@@ -45,11 +45,11 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(ui->pushButton_TcpClient_send, &QPushButton::clicked, 
             this, &MainWindow::slot_btn_tcpClient_send);
 
-    // 打开tcpclient
+    // 打开tcpserver
     connect(ui->pushButton_TcpServer_open, &QPushButton::clicked, 
             this, &MainWindow::slot_btn_tcpServer_open);
     
-    // 打开tcpclient
+    // 发送数据到客户端
     connect(ui->pushButton_TcpServer_send, &QPushButton::clicked, 
             this, &MainWindow::slot_btn_tcpServer_send);
 
@@ -263,6 +263,9 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
     } else if (type == "tcpClient") {
         if (!state) {
             LOG(INFO) << "tcpClient is not open!";
+            ui->pushButton_TcpClient_open->setText("打开");
+            ui->pushButton_TcpClient_open->setStyleSheet("background-color: { }");
+
             QVariantMap data;
             data["type"] = "tcpClient";
             data["switch"] = false;
@@ -270,9 +273,13 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
         }   
 
         ui->pushButton_TcpClient_open->setEnabled(true); // 开启
+
     } else if (type == "tcpServer") {
         if (!state) {
             LOG(INFO) << "tcpServer is not open!";
+            ui->pushButton_TcpServer_open->setText("打开");
+            ui->pushButton_TcpServer_open->setStyleSheet("background-color: { }");
+
             QVariantMap data;
             data["type"] = "tcpServer";
             data["switch"] = false;
@@ -280,6 +287,7 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
         }   
 
         ui->pushButton_TcpServer_open->setEnabled(true); // 开启
+
     }
 }
 
