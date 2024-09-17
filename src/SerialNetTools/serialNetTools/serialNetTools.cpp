@@ -5,6 +5,7 @@
 #include <qnamespace.h>
 #include <qobject.h>
 #include "myTcpClient.h"
+#include "myTcpServer.h"
 
 /**
  * serialNetTools 类的构造函数
@@ -57,6 +58,11 @@ serialNetTools::~serialNetTools()
         tcp_server_thread = nullptr;
     }
 
+    if (tcp_server != nullptr) {
+        delete tcp_server;
+        tcp_server = nullptr;
+    }
+
     std::cout << "de!" << std::endl;
 }
 
@@ -97,8 +103,22 @@ int serialNetTools::init()
     QObject::connect(mainWindow, &MainWindow::signal_tcpClientSend, 
                     tcp_client, &tcpClient::slot_write, Qt::QueuedConnection);
 
+    // 创建服务器端
+    switchMap["tcpServer"] = [this](const QVariantMap& msg){switch_tcpServer(msg);};
+    tcp_server_thread = new QThread();
+    tcp_server = new tcpServer();
+    tcp_server->moveToThread(tcp_server_thread);
+    // tcp客户端的信号与槽的连接
+    QObject::connect(tcp_server, &tcpServer::signal_openStatus, 
+                    mainWindow, &MainWindow::slot_module_status, Qt::QueuedConnection);
+    QObject::connect(tcp_server, &tcpServer::signal_tcpServer, 
+                    mainWindow, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
+    QObject::connect(mainWindow, &::MainWindow::signal_tcpServerSend, 
+                    tcp_server, &tcpServer::slot_write, Qt::QueuedConnection);
+
     mySerial_thread->start();
     tcp_client_thread->start();
+    tcp_server_thread->start();
     return app->exec();
 }
 
@@ -135,6 +155,21 @@ void serialNetTools::switch_tcpClient(const QVariantMap &msg){
     } else {
         LOG(INFO) << "tcpClient close";
         QMetaObject::invokeMethod(tcp_client, "stop", Qt::QueuedConnection);
+    }
+}
+
+void serialNetTools::switch_tcpServer(const QVariantMap &msg){
+    bool state = msg.value("switch").toBool();
+    if (state == true) {
+        string ip = msg.value("ip").toString().toStdString();
+        int port = msg.value("port").toInt();
+        tcp_server->init(ip, port); // 初始化客户端
+
+        LOG(INFO) << "tcp_server open" << ip << " " + port;
+        QMetaObject::invokeMethod(tcp_server, "start", Qt::QueuedConnection);
+    } else {
+        LOG(INFO) << "tcp_server close";
+        QMetaObject::invokeMethod(tcp_server, "stop", Qt::QueuedConnection);
     }
 }
 

@@ -36,15 +36,21 @@ public slots:
 
     // 打开tcpClient客户端
     void slot_btn_tcpClient_open();
+    // 打开tcpServer服务器端
+    void slot_btn_tcpServer_open();
 
     // 打开tcpClient客户端
     void slot_btn_tcpClient_send();
+    // 打开tcpServer服务器端
+    void slot_btn_tcpServer_send();
 
 signals:
     // UI 发送串口数据
     void signal_serialSend(const QString&);
-    // UI 发送串口数据
+    // UI 发送Tcpclient
     void signal_tcpClientSend(const QString&);
+    // UI 发送Tcpserver
+    void signal_tcpServerSend(const QString&);
     // 开关
     void signal_switch(const QVariantMap&);
 

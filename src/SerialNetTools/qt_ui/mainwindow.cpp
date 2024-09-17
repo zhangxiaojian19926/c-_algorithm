@@ -45,11 +45,18 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     connect(ui->pushButton_TcpClient_send, &QPushButton::clicked, 
             this, &MainWindow::slot_btn_tcpClient_send);
 
+    // 打开tcpclient
+    connect(ui->pushButton_TcpServer_open, &QPushButton::clicked, 
+            this, &MainWindow::slot_btn_tcpServer_open);
+    
+    // 打开tcpclient
+    connect(ui->pushButton_TcpServer_send, &QPushButton::clicked, 
+            this, &MainWindow::slot_btn_tcpServer_send);
+
     //刷新窗口列表
     serial_refresh(ui->comboBox_serialName);
 
     LOG(INFO) << "UI is open!";
-
 }
 
 MainWindow::~MainWindow()
@@ -100,6 +107,15 @@ void MainWindow::slot_btn_tcpClient_send(){
     QString send_msg = ui->lineEdit_TcpClient_input->text();
     emit signal_tcpClientSend(send_msg);// 发送出去，给到tcpclient
     QString str = addTimerStr("tcpClient send: ");
+    str += send_msg;
+    ui->textEdit_send->append(str);// 显示到文本框
+}
+
+// 发送数据到客户端
+void MainWindow::slot_btn_tcpServer_send(){
+    QString send_msg = ui->lineEdit_TcpServer_input->text();
+    emit signal_tcpServerSend(send_msg);// 发送出去，给到tcpclient
+    QString str = addTimerStr("tcpServer send: ");
     str += send_msg;
     ui->textEdit_send->append(str);// 显示到文本框
 }
@@ -184,6 +200,35 @@ void MainWindow::slot_btn_tcpClient_open()
     emit signal_switch(data);
 }
 
+// 打开服务器端
+void MainWindow::slot_btn_tcpServer_open()
+{
+    QString ip = ui->lineEdit_TcpServer_IP->text();
+    QString port = ui->lineEdit_TcpServer_port->text();
+
+    // 封装成qmap
+    QVariantMap data;
+    data["type"] = "tcpServer";
+    data["ip"] = ip;
+    data["port"] = port;
+
+    // 打开关闭按钮并设置其颜色
+    if (ui->pushButton_TcpServer_open->text() == "打开") {
+        data["switch"] = true;
+        ui->pushButton_TcpServer_open->setText("关闭");
+        ui->pushButton_TcpServer_open->setStyleSheet("background-color: green;");
+    } else {
+        data["switch"] = false;
+        ui->pushButton_TcpServer_open->setText("打开");
+        ui->pushButton_TcpServer_open->setStyleSheet("background-color: { }");
+    }
+
+    LOG(INFO) << "tcpClient ip: " << ip.toStdString() << " port: " << port.toStdString();
+
+    // 发送数据到tcp client
+    emit signal_switch(data);
+}
+
 // 各个模块的状态
 void MainWindow::slot_module_status(const QVariantMap& msg)
 {
@@ -223,8 +268,18 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
             data["switch"] = false;
             emit signal_switch(data);
         }   
-        
+
         ui->pushButton_TcpClient_open->setEnabled(true); // 开启
+    } else if (type == "tcpServer") {
+        if (!state) {
+            LOG(INFO) << "tcpServer is not open!";
+            QVariantMap data;
+            data["type"] = "tcpServer";
+            data["switch"] = false;
+            emit signal_switch(data);
+        }   
+
+        ui->pushButton_TcpServer_open->setEnabled(true); // 开启
     }
 }
 

@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "mySerial.h"
 #include "myTcpClient.h"
+#include "myTcpServer.h"
 #include <QThread>
 #include <QApplication>
 #include <QHash>
@@ -27,6 +28,7 @@ private:
     // 私有成员函数
     void switch_mySerial(const QVariantMap& msg);
     void switch_tcpClient(const QVariantMap& msg);
+    void switch_tcpServer(const QVariantMap& msg);
 
 public slots:
     void slot_switch(const QVariantMap &);
@@ -37,6 +39,7 @@ private:
     MainWindow *mainWindow = nullptr;
     MySerial *mySerial = nullptr;
     tcpClient *tcp_client = nullptr;
+    tcpServer *tcp_server = nullptr;
     QApplication *app = nullptr;
     QThread *mySerial_thread = nullptr;
     QThread *tcp_client_thread = nullptr;

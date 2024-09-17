@@ -20,6 +20,7 @@ void tcpServer::init(const std::string& ip, const int& port){
 }
 
 bool tcpServer::start(){
+    LOG(INFO) << "tcpserver start";
     stop();
     QVariantMap msg;
     tcpServer_ = new QTcpServer(this);
