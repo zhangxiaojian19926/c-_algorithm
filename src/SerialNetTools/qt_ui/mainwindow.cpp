@@ -54,8 +54,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
             this, &MainWindow::slot_btn_tcpServer_send);
 
     // 更新提示  服务器 与 客户端连接失败
-    QObject::connect(this, &MainWindow::signal_tips, 
+    connect(this, &MainWindow::signal_tips, 
                 this, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
+
+    // 发送数据到ros节点中
+    connect(ui->pushButton_Ros_send, &QPushButton::clicked,
+            this, &MainWindow::slot_rosPub_send);
 
     //刷新窗口列表
     serial_refresh(ui->comboBox_serialName);
@@ -311,4 +315,12 @@ void MainWindow::slot_module_status(const QVariantMap& msg)
 void MainWindow::slot_refresh_serial(){
     //加载串口列表
     serial_refresh(ui->comboBox_serialName);
+}
+
+// 发送数据到rosnode
+void MainWindow::slot_rosPub_send(){
+    QString msg = ui->lineEdit_Ros_input->text();
+    emit signal_rosPub(msg);
+    ui->textEdit_send->append(addTimerStr("Ros send: ") + msg);
+    LOG(INFO) << "send to ros: " << msg.toStdString();
 }

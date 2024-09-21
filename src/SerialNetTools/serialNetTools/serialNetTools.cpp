@@ -1,11 +1,10 @@
-#include "serialNetTools.h"
 #include "mainwindow.h"
 #include "mySerial.h"
-#include <cstddef>
+#include <qcoreapplication.h>
 #include <qnamespace.h>
 #include <qobject.h>
-#include "myTcpClient.h"
-#include "myTcpServer.h"
+#include <qt5/QtCore/qthread.h>
+#include "serialNetTools.h"
 
 /**
  * serialNetTools 类的构造函数
@@ -63,6 +62,16 @@ serialNetTools::~serialNetTools()
         tcp_server = nullptr;
     }
 
+    if (rosNode_thread != nullptr) {
+        rosNode_thread->deleteLater();
+        rosNode_thread = nullptr;
+    }
+
+    if (rosNode != nullptr) {
+        delete rosNode;
+        rosNode = nullptr;
+    }
+
     std::cout << "de!" << std::endl;
 }
 
@@ -76,6 +85,20 @@ int serialNetTools::init()
     // 利用表来开关不同的模块
     QObject::connect(mainWindow, &MainWindow::signal_switch, 
                         this, &serialNetTools::slot_switch, Qt::QueuedConnection);
+
+    // rosNode 初始化
+    rosNode = new RosNode(argc_, argv);
+    rosNode->init(); // 发送与订阅
+    rosNode_thread = new QThread();
+    rosNode->moveToThread(rosNode_thread);
+    QObject::connect(rosNode_thread, &QThread::started, rosNode, &RosNode::run);
+    QObject::connect(rosNode, &RosNode::signal_rosShutdown, 
+                        app, &QCoreApplication::quit, Qt::QueuedConnection);
+    QObject::connect(rosNode, &RosNode::signal_ros_strMsg, 
+                    mainWindow, &MainWindow::slot_send_textEdit, Qt::QueuedConnection);
+    QObject::connect(mainWindow, &MainWindow::signal_rosPub, rosNode, 
+                    &RosNode::slot_ros_pubStrMsg, Qt::QueuedConnection);
+
 
     switchMap["mySerial"] = [this](const QVariantMap& msg){switch_mySerial(msg);};
     mySerial_thread = new QThread();
@@ -119,6 +142,7 @@ int serialNetTools::init()
     mySerial_thread->start();
     tcp_client_thread->start();
     tcp_server_thread->start();
+    rosNode_thread->start();// 开启线程
     return app->exec();
 }
 

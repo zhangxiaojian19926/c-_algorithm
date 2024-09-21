@@ -44,6 +44,9 @@ public slots:
     // 打开tcpServer服务器端
     void slot_btn_tcpServer_send();
 
+    // UI 发送数据到ros
+    void slot_rosPub_send();
+
 signals:
     // UI 发送串口数据
     void signal_serialSend(const QString&);
@@ -56,6 +59,9 @@ signals:
 
     // 做一个链接失败的提示
     void signal_tips(const QVariantMap&);
+
+    // UI 发送数据到ros
+    void signal_rosPub(const QString&);
 
 
 private:

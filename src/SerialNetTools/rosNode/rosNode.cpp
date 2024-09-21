@@ -1,5 +1,7 @@
 #include "rosNode.h"
+#include "myLog.h"
 #include <QCoreApplication>
+#include <log4cxx/log4cxx.h>
 
 /**
  * 构造函数
@@ -75,5 +77,6 @@ void RosNode::callback_strMsg(const std_msgs::StringConstPtr msg)
     QVariantMap data;
     data["type"] = "rosNode";
     data["data"] = QString::fromStdString(msg->data);
+    LOG(INFO) << "callback_strMsg: " << msg->data;
     Q_EMIT signal_ros_strMsg(data);
 }

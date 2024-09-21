@@ -40,6 +40,16 @@ set(QT_SOURCES serialNetTools.cpp) # 生成源文件
 
 QT5_WRAP_CPP(QT_MOC_HPP ${QT_MOC})# 生成头文件
 
+#导入ROS
+find_package(catkin REQUIRED COMPONENTS
+       roscpp
+       rospy
+       std_msgs
+       sensor_msgs
+       )
+
+include_directories(${catkin_INCLUDE_DIRS})
+
 #*************************
 # 生成动态库
 #*************************
@@ -52,11 +62,11 @@ target_link_libraries(${PROJECT_NAME}
                         Qt5::Widgets 
                         Qt5::Network 
                         Qt5::Concurrent
-                        # rosNode
+                        rosNode
                         mySerial
                         qt_ui
                         myTcp
-                        # ${catkin_LIBRARIES}
+                        ${catkin_LIBRARIES}
                         )
 
 #*************************

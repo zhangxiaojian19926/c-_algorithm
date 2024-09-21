@@ -2,7 +2,6 @@
 
 #include <QtWidgets/qapplication.h>
 #include <functional>
-#include <iostream>
 #include "mainwindow.h"
 #include "mySerial.h"
 #include "myTcpClient.h"
@@ -14,6 +13,7 @@
 #include <qhash.h>
 #include <qobjectdefs.h>
 #include <qthread.h>
+#include "rosNode.h"
 
 class serialNetTools:public QObject
 {
@@ -38,12 +38,14 @@ private:
     char **argv;
     MainWindow *mainWindow = nullptr;
     MySerial *mySerial = nullptr;
+    RosNode *rosNode = nullptr;
     tcpClient *tcp_client = nullptr;
     tcpServer *tcp_server = nullptr;
     QApplication *app = nullptr;
     QThread *mySerial_thread = nullptr;
     QThread *tcp_client_thread = nullptr;
     QThread *tcp_server_thread = nullptr;
+    QThread *rosNode_thread = nullptr;
     QHash<QString, std::function<void(const QVariantMap&)>> switchMap;
 };
 

@@ -478,7 +478,7 @@
     <property name="title">
      <string>Ros</string>
     </property>
-    <widget class="QPushButton" name="pushButton_TcpServer_send_2">
+    <widget class="QPushButton" name="pushButton_Ros_send">
      <property name="geometry">
       <rect>
        <x>384</x>
@@ -491,7 +491,7 @@
       <string>发送</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_TcpServer_input_2">
+    <widget class="QLineEdit" name="lineEdit_Ros_input">
      <property name="geometry">
       <rect>
        <x>52</x>

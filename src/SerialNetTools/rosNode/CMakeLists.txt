@@ -49,7 +49,7 @@ target_link_libraries(${PROJECT_NAME}
 #*************************
 # 生成可执行文件
 #************************
-add_executable(${PROJECT_NAME}_test main_test.cpp)
+# add_executable(${PROJECT_NAME}_test main_test.cpp)
 
-target_link_libraries(${PROJECT_NAME}_test 
-                        ${PROJECT_NAME} )                       
+# target_link_libraries(${PROJECT_NAME}_test 
+#                         ${PROJECT_NAME} )                       
