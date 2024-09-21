@@ -18,8 +18,8 @@ project(common)
 #*************************
 # 生成动态库
 #*************************
-add_library(${PROJECT_NAME} SHARED common.cpp myLog.cpp) # 生成动态库
-target_link_libraries(${PROJECT_NAME} glog)
+add_library(${PROJECT_NAME} SHARED common.cpp myLog.cpp myDataBase.cpp) # 生成动态库
+target_link_libraries(${PROJECT_NAME} glog yaml-cpp)
 
 #*************************
 # 生成可执行文件
